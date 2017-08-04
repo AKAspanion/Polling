@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="learning.spanion.com.polling">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".Splash"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".FrontPage"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="learning.spanion.com.polling.FRONTPAGE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Login"
+            android:parentActivityName=".FrontPage"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="learning.spanion.com.polling.LOGIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Polling"
+            android:parentActivityName=".Login"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="learning.spanion.com.polling.POLLING" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".SignUp"
+            android:parentActivityName=".FrontPage"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="learning.spanion.com.polling.SIGNUP" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".CasteVote"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="learning.spanion.com.polling.CASTEVOTE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ViewDatabase"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="learning.spanion.com.polling.VIEWDATABASE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ViewUsers"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="learning.spanion.com.polling.VIEWUSERS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ViewVoteResults"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="learning.spanion.com.polling.VIEWVOTERESULTS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Update"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="learning.spanion.com.polling.UPDATE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
