@@ -44,25 +44,25 @@ public class CasteVote extends Activity{
         rb = (RadioButton) findViewById(radioID);
 
         switch (rb.getText().toString()){
-            case "Bahujan Samaj Party":
+            case "    Bahujan Samaj Party":
                 name="BSP";
                 break;
-            case "Bharatiya Janata Party":
+            case "    Bharatiya Janata Party":
                 name="BJP";
                 break;
-            case "Communist Party of India":
+            case "    Communist Party of India":
                 name="CPI";
                 break;
-            case "Indian National Congress":
+            case "    Indian National Congress":
                 name="INC";
                 break;
-            case "Nationalist Congress Party":
+            case "    Nationalist Congress Party":
                 name="NCP";
                 break;
-            case "All India Trinamool Congress":
+            case "    All India Trinamool Congress":
                 name="AITC";
                 break;
-            case "None of the above":
+            case "    None of the above":
                 name="NOTA";
                 break;
             default:
@@ -89,10 +89,10 @@ public class CasteVote extends Activity{
 
         partydb.open();
         Cursor c=partydb.executeQuery("SELECT * FROM partyinform WHERE PARTYNAME='"+name+"'");
-        String dbname=null;
+        String dbname;
         int count=0;
         for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
-            dbname = c.getString(0).toString();
+            dbname = c.getString(0);
             if(dbname.equals(name)){
                 count=c.getInt(1);
                 count++;

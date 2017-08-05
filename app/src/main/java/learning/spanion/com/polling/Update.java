@@ -1,9 +1,13 @@
 package learning.spanion.com.polling;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -18,7 +22,7 @@ import android.widget.Toast;
 public class Update extends Activity {
 
     EditText  firstName, lastName, address, email, phone;
-    String id;
+    String id,m_Text="";
     Button confirm;
     LoginDatabase logindb;
     @Override
@@ -53,21 +57,45 @@ public class Update extends Activity {
                 else{
                     if(checkForEmail(email.getText().toString())){
                         if(checkPhoneNo(phone.getText().toString())) {
-                            logindb.open();
-                            if(logindb.updateData(id, firstName.getText().toString(),lastName.getText().toString(),
-                                    address.getText().toString(),email.getText().toString(),phone.getText().toString())){
-                                Toast.makeText(Update.this, "Update Successful!", Toast.LENGTH_SHORT).show();
-                                Intent launchPolling = new Intent(Update.this, Polling.class);
-                                launchPolling.putExtra("id",id);
-                                launchPolling.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(launchPolling);
-                                overridePendingTransition( R.anim.activity_up, R.anim.activity_down);
-                            }
-                            else {
-                                Toast.makeText(Update.this, "Error Updating!", Toast.LENGTH_SHORT).show();
-                            }
-                            logindb.close();
+                            AlertDialog.Builder builder = new AlertDialog.Builder(Update.this);
+                            builder.setTitle("Confirm Password");
+                            final EditText input = new EditText(Update.this);
+                            input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                            builder.setView(input);
+                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    m_Text = input.getText().toString();
 
+                                    logindb.open();
+                                    Cursor c=logindb.executeQuery("SELECT PASS FROM userinfo WHERE UNIQUEID='"+id+"'");
+                                    c.moveToFirst();
+                                    if(m_Text.equals(c.getString(0))){
+                                        if (logindb.updateData(id, firstName.getText().toString(), lastName.getText().toString(),
+                                                address.getText().toString(), email.getText().toString(), phone.getText().toString())) {
+                                            Toast.makeText(Update.this, "Update Successful!", Toast.LENGTH_SHORT).show();
+                                            Intent launchPolling = new Intent(Update.this, Polling.class);
+                                            launchPolling.putExtra("id", id);
+                                            launchPolling.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(launchPolling);
+                                            overridePendingTransition(R.anim.activity_up, R.anim.activity_down);
+                                        } else {
+                                            Toast.makeText(Update.this, "Error Updating!", Toast.LENGTH_SHORT).show();
+                                        }
+                                        logindb.close();
+                                    }
+                                    else {
+                                        Toast.makeText(Update.this, "Wrong password!", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            builder.show();
                         }
                         else{
                             Toast.makeText(Update.this, "Phone no should be 10 digit long!", Toast.LENGTH_SHORT).show();
@@ -83,14 +111,9 @@ public class Update extends Activity {
 
     }
     private boolean checkForEmail(String email){
-        if(email.contains("@")&& email.contains("."))
-            return true;
-        return false;
+        return email.contains("@") && email.contains(".");
     }
     private boolean checkPhoneNo(String no){
-        if(no.length()==10){
-            return true;
-        }
-        return false;
+        return no.length() == 10;
     }
 }
